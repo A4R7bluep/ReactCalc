@@ -17,12 +17,23 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
 } from 'react-native';
+
+
+export function ButtonTest () {
+  return (
+    <View style={styles.container}>
+      <Text>Button Clicked!</Text>
+    </View>
+  )
+}
+
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Hello World</Text>
+      <Button onPress={ButtonTest} title='Click Me!' />
     </View>
   );
 }
@@ -31,5 +42,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   }
 });
