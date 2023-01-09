@@ -8,28 +8,43 @@
  * @format
  */
 
-import React, {type PropsWithChildren} from 'react';
+import React, { type PropsWithChildren, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+	SafeAreaView,
+	ScrollView,
+	StatusBar,
+	StyleSheet,
+	Text,
+	useColorScheme,
+	View,
+	Button,
 } from 'react-native';
 
+var calcStr = "";
+
+// function updateCalcStr(mod: string) {
+// 	calcStr += mod;
+// }
+
+const CalcButton = (props: { number: string; }) => {
+	return (
+		<Button onPress={() => calcStr += props.number} title={props.number}></Button>
+	);
+}
+
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			<Text>{calcStr}</Text>
+			<CalcButton number="1" ></CalcButton>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  }
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	}
 });
