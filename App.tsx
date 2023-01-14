@@ -20,7 +20,7 @@ import {
 	Button,
 } from 'react-native';
 
-var calcStr = "";
+var calcStr = "calcStr";
 
 // function updateCalcStr(mod: string) {
 // 	calcStr += mod;
@@ -28,7 +28,7 @@ var calcStr = "";
 
 const CalcButton = (props: { number: string; }) => {
 	return (
-		<Button onPress={() => calcStr += props.number} title={props.number}></Button>
+		<Button onPress={() => calcStr = props.number} title={props.number}></Button>
 	);
 }
 
