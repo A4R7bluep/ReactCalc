@@ -28,7 +28,9 @@ function addToCalcStr(props: { adder: string }) {
 
 const NumButton = (props: { num: string }) => {
   return (
-    <Button onPress={() => addToCalcStr({ adder: props.num })} title={props.num} />
+    <View>
+      <Button onPress={() => addToCalcStr({ adder: props.num })} title={props.num} />
+    </View>
   )
 }
 
@@ -37,6 +39,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>{textVal}</Text>
       <NumButton num="1" />
+      <Text>test</Text>
     </View>
   );
 }
