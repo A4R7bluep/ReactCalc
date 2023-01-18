@@ -20,22 +20,13 @@ import {
   Button,
 } from 'react-native';
 
-// const text = (props: { num: string }) => {
-//   return (
-//     <Text>{props.num}</Text>
-//   )
-// }
+const [textVal, setValue] = useState('');
 
-labelVal = '';
+function addToCalcStr(props: { adder: string }) {
+  setValue(textVal + props.adder);
+}
 
 const NumButton = (props: { num: string }) => {
-  const [textVal, setValue] = useState('');
-
-  function addToCalcStr(props: { adder: string }) {
-    setValue(textVal + props.adder);
-    labelVal = textVal;
-  }
-
   return (
     <Button onPress={() => addToCalcStr({ adder: props.num })} title={props.num} />
   )
@@ -44,7 +35,7 @@ const NumButton = (props: { num: string }) => {
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>{labelVal}</Text>
+      <Text>{textVal}</Text>
       <NumButton num="1" />
     </View>
   );
