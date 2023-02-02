@@ -1,3 +1,13 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * Generated with the TypeScript template
+ * https://github.com/react-native-community/react-native-template-typescript
+ *
+ * @format
+ */
+
 import React, { type PropsWithChildren, useState } from 'react';
 import {
   SafeAreaView,
@@ -10,49 +20,30 @@ import {
   Button,
 } from 'react-native';
 
-var textVal = 'text';
 
-interface IProps {
-  num: string;
+const NumButton = (props: { num: string, setValue: any, textVal: string }) => {
+  return (
+    <View style={`styles.numButtons`}>
+      <Button onPress={() => props.setValue(props.textVal + props.num)} title={props.num} />
+    </View>
+  )
 }
 
-interface IState {
-  textVal?: string;
-}
+const App: () => JSX.Element = () => {
+  const [textVal, setValue] = useState('');
 
-class NumButton extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-
-    // this.state = {
-    //   textVal: '',
-    // };
-
-    this.addToCalcStr = this.addToCalcStr.bind(this);
-  }
-
-  addToCalcStr(adder: string) {
-    // this.setState({textVal: textVal + adder});
-    textVal = textVal + adder;
-    console.log(textVal)
-  }
-
-  render() {
-    return (
-      <View>
-        <Text>{textVal}</Text>
-        <Button onPress={() => this.addToCalcStr(this.props.num)} title={this.props.num} />
-      </View>
-    );
-  }
-}
-
-export default function App() {
   return (
     <View style={styles.container}>
       <Text>{textVal}</Text>
-      <NumButton num="1" />
-      {/* <Button onPress={() => setValue(textVal + '1')} title={'1'} /> */}
+      <NumButton num="1" setValue={setValue} textVal={textVal} />
+      <NumButton num="2" setValue={setValue} textVal={textVal} />
+      <NumButton num="3" setValue={setValue} textVal={textVal} />
+      <NumButton num="4" setValue={setValue} textVal={textVal} />
+      <NumButton num="5" setValue={setValue} textVal={textVal} />
+      <NumButton num="6" setValue={setValue} textVal={textVal} />
+      <NumButton num="7" setValue={setValue} textVal={textVal} />
+      <NumButton num="8" setValue={setValue} textVal={textVal} />
+      <NumButton num="9" setValue={setValue} textVal={textVal} />
     </View>
   );
 }
@@ -60,8 +51,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flexBasis: '33%',
     justifyContent: 'center',
     alignItems: 'center',
     border: '1px solid black',
-  }
+  },
+  num: {
+    flexBasis: '33%',
+  },
 });
+
+export default App;
