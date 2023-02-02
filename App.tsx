@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, { type PropsWithChildren, useState } from 'react';
 import {
   SafeAreaView,
@@ -20,18 +10,41 @@ import {
   Button,
 } from 'react-native';
 
-const [textVal, setValue] = useState('');
+var textVal = 'text';
 
-function addToCalcStr(props: { adder: string }) {
-  setValue(textVal + props.adder);
+interface IProps {
+  num: string;
 }
 
-const NumButton = (props: { num: string }) => {
-  return (
-    <View>
-      <Button onPress={() => addToCalcStr({ adder: props.num })} title={props.num} />
-    </View>
-  )
+interface IState {
+  textVal?: string;
+}
+
+class NumButton extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+
+    // this.state = {
+    //   textVal: '',
+    // };
+
+    this.addToCalcStr = this.addToCalcStr.bind(this);
+  }
+
+  addToCalcStr(adder: string) {
+    // this.setState({textVal: textVal + adder});
+    textVal = textVal + adder;
+    console.log(textVal)
+  }
+
+  render() {
+    return (
+      <View>
+        <Text>{textVal}</Text>
+        <Button onPress={() => this.addToCalcStr(this.props.num)} title={this.props.num} />
+      </View>
+    );
+  }
 }
 
 export default function App() {
@@ -39,7 +52,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>{textVal}</Text>
       <NumButton num="1" />
-      <Text>test</Text>
+      {/* <Button onPress={() => setValue(textVal + '1')} title={'1'} /> */}
     </View>
   );
 }
@@ -49,5 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    border: '1px solid black',
   }
 });
