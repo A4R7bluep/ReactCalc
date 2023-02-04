@@ -19,48 +19,73 @@ import {
   View,
   Button,
 } from 'react-native';
+import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 
 
 const NumButton = (props: { num: string, setValue: any, textVal: string }) => {
   return (
-    <View style={`styles.numButtons`}>
+    <View>
       <Button onPress={() => props.setValue(props.textVal + props.num)} title={props.num} />
     </View>
   )
 }
 
+
 const App: () => JSX.Element = () => {
   const [textVal, setValue] = useState('');
 
+  const CONTENT = {
+    tableHead: [<Text style={styles.label}>{textVal}</Text>],
+    tableData: [
+      [
+        <NumButton num="1" setValue={setValue} textVal={textVal} />,
+        <NumButton num="2" setValue={setValue} textVal={textVal} />,
+        <NumButton num="3" setValue={setValue} textVal={textVal} />,
+      ],
+      [
+        <NumButton num="4" setValue={setValue} textVal={textVal} />,
+        <NumButton num="5" setValue={setValue} textVal={textVal} />,
+        <NumButton num="6" setValue={setValue} textVal={textVal} />,
+      ],
+      [
+        <NumButton num="7" setValue={setValue} textVal={textVal} />,
+        <NumButton num="8" setValue={setValue} textVal={textVal} />,
+        <NumButton num="9" setValue={setValue} textVal={textVal} />,
+      ]
+    ]
+  }
+
   return (
     <View style={styles.container}>
-      <Text>{textVal}</Text>
-      <NumButton num="1" setValue={setValue} textVal={textVal} />
-      <NumButton num="2" setValue={setValue} textVal={textVal} />
-      <NumButton num="3" setValue={setValue} textVal={textVal} />
-      <NumButton num="4" setValue={setValue} textVal={textVal} />
-      <NumButton num="5" setValue={setValue} textVal={textVal} />
-      <NumButton num="6" setValue={setValue} textVal={textVal} />
-      <NumButton num="7" setValue={setValue} textVal={textVal} />
-      <NumButton num="8" setValue={setValue} textVal={textVal} />
-      <NumButton num="9" setValue={setValue} textVal={textVal} />
+      <View>
+        <Table>
+          <Row
+            data={CONTENT.tableHead}
+            flexArr={[1]}
+            style={styles.head}
+            textStyle={styles.text}
+          />
+          <TableWrapper style={styles.wrapper}>
+            <Rows
+              data={CONTENT.tableData}
+              flexArr={[1, 1, 1]}
+              style={styles.row}
+              textStyle={styles.text}
+            />
+          </TableWrapper>
+        </Table>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    flexBasis: '33%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: '1px solid black',
-  },
-  num: {
-    flexBasis: '33%',
-  },
+  container: { flex: 1, padding: 16, paddingTop: 50, backgroundColor: '#fff' },
+  head: { height: 50, backgroundColor: 'black' },
+  wrapper: { flexDirection: 'row' },
+  row: { height: 40 },
+  text: { textAlign: 'center' },
+  label: { textAlign: 'right', color: 'white', fontSize: 20, padding: 10 },
 });
 
 export default App;
