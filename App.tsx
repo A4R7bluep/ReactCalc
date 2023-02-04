@@ -24,7 +24,7 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 
 const NumButton = (props: { num: string, setValue: any, textVal: string }) => {
   return (
-    <View>
+    <View style={styles.button}>
       <Button onPress={() => props.setValue(props.textVal + props.num)} title={props.num} />
     </View>
   )
@@ -58,7 +58,7 @@ const App: () => JSX.Element = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Table>
+        <Table style={styles.table}>
           <Row
             data={CONTENT.tableHead}
             flexArr={[1]}
@@ -80,12 +80,14 @@ const App: () => JSX.Element = () => {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 50, backgroundColor: '#fff' },
-  head: { height: 50, backgroundColor: 'black' },
+  container: { flex: 1, padding: 16, paddingTop: 50, backgroundColor: '#262a33' },
+  head: { height: 50, backgroundColor: '#23262e' },
   wrapper: { flexDirection: 'row' },
-  row: { height: 40 },
+  row: { height: 40, backgroundColor: '#23262e' },
   text: { textAlign: 'center' },
   label: { textAlign: 'right', color: 'white', fontSize: 20, padding: 10 },
+  button: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
+  table: { borderRadius: 100 }
 });
 
 export default App;
