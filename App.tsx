@@ -20,12 +20,82 @@ import {
   Button,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 
-const NumButton = (props: { num: string, setValue: any, textVal: string }) => {
+const MainButton = (props: { value: string, setValue: any, textVal: string }) => {
   return (
-    <View style={styles.button}>
-      <Button onPress={() => props.setValue(props.textVal + props.num)} title={props.num} />
+    <View style={styles.mainButtons}>
+      <Button onPress={() => props.setValue(props.textVal + props.value)} title={props.value} />
+    </View>
+  )
+}
+
+const ClearButton = (props: { setValue: any, setInParentheses: any }) => {
+  function clear() {
+    props.setValue('')
+    props.setInParentheses(false)
+  }
+
+  return (
+    <View style={styles.clearButton}>
+      <Button onPress={() => clear()} title="C" />
+    </View>
+  )
+}
+
+const ParenButton = (props: { setInParentheses: any, inParentheses: boolean, setValue: any, textVal: string }) => {
+  function paren() {
+    if (props.inParentheses) {
+      props.setValue(props.textVal + ')')
+      props.setInParentheses(false)
+    }
+
+    else {
+      props.setValue(props.textVal + '(')
+      props.setInParentheses(true)
+    }
+  }
+
+  return (
+    <View style={styles.parenButton}>
+      <Button onPress={() => paren()} title='()' />
+    </View>
+  )
+}
+
+const NegativeButton = (props: { setValue: any, textVal: string, setInParentheses: any, inParentheses: boolean }) => {
+  function negative() {
+    if (props.inParentheses) {
+      props.textVal.indexOf('(-1*')
+      props.setInParentheses(false)
+    }
+
+    else {
+      props.setValue(props.textVal + '(-1*')
+      props.setInParentheses(true)
+    }
+  }
+
+  return (
+    <View style={styles.negativeButton}>
+      <Button onPress={() => negative()} title='+/-' />
+    </View>
+  )
+}
+
+const DeleteButton = (props: { setValue: any, textVal: string }) => {
+  return (
+    <View style={styles.deleteButton}>
+      <Button onPress={() => props.setValue(props.textVal.slice(0, -1))} title='⌫' />
+    </View>
+  )
+}
+
+const EqualsButton = (props: {setValue: any, textVal: string }) => {
+  return (
+    <View style={styles.equalsButton}>
+      <Button onPress={() => props.setValue((props.textVal as unknown as Int32))} title='=' />
     </View>
   )
 }
@@ -33,24 +103,40 @@ const NumButton = (props: { num: string, setValue: any, textVal: string }) => {
 
 const App: () => JSX.Element = () => {
   const [textVal, setValue] = useState('');
+  const [inParentheses, setInParentheses] = useState(false);
 
   const CONTENT = {
     tableHead: [<Text style={styles.label}>{textVal}</Text>],
     tableData: [
       [
-        <NumButton num="1" setValue={setValue} textVal={textVal} />,
-        <NumButton num="2" setValue={setValue} textVal={textVal} />,
-        <NumButton num="3" setValue={setValue} textVal={textVal} />,
+        <ClearButton setValue={setValue} setInParentheses={setInParentheses} />,
+        <ParenButton setInParentheses={setInParentheses} inParentheses={inParentheses} setValue={setValue} textVal={textVal} />,
+        <DeleteButton setValue={setValue} textVal={textVal} />,
+        <MainButton value="/" setValue={setValue} textVal={textVal} />,
       ],
       [
-        <NumButton num="4" setValue={setValue} textVal={textVal} />,
-        <NumButton num="5" setValue={setValue} textVal={textVal} />,
-        <NumButton num="6" setValue={setValue} textVal={textVal} />,
+        <MainButton value="7" setValue={setValue} textVal={textVal} />,
+        <MainButton value="8" setValue={setValue} textVal={textVal} />,
+        <MainButton value="9" setValue={setValue} textVal={textVal} />,
+        <MainButton value="*" setValue={setValue} textVal={textVal} />,
       ],
       [
-        <NumButton num="7" setValue={setValue} textVal={textVal} />,
-        <NumButton num="8" setValue={setValue} textVal={textVal} />,
-        <NumButton num="9" setValue={setValue} textVal={textVal} />,
+        <MainButton value="4" setValue={setValue} textVal={textVal} />,
+        <MainButton value="5" setValue={setValue} textVal={textVal} />,
+        <MainButton value="6" setValue={setValue} textVal={textVal} />,
+        <MainButton value="-" setValue={setValue} textVal={textVal} />,
+      ],
+      [
+        <MainButton value="1" setValue={setValue} textVal={textVal} />,
+        <MainButton value="2" setValue={setValue} textVal={textVal} />,
+        <MainButton value="3" setValue={setValue} textVal={textVal} />,
+        <MainButton value="+" setValue={setValue} textVal={textVal} />,
+      ],
+      [
+        <NegativeButton setValue={setValue} textVal={textVal} setInParentheses={setInParentheses} inParentheses={inParentheses} />,
+        <MainButton value="0" setValue={setValue} textVal={textVal} />,
+        <MainButton value="." setValue={setValue} textVal={textVal} />,
+        <EqualsButton setValue={setValue} textVal={textVal} />,
       ]
     ]
   }
@@ -86,8 +172,14 @@ const styles = StyleSheet.create({
   row: { height: 40, backgroundColor: '#23262e' },
   text: { textAlign: 'center' },
   label: { textAlign: 'right', color: 'white', fontSize: 20, padding: 10 },
-  button: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
-  table: { borderRadius: 100 }
+  table: { borderRadius: 100 },
+
+  mainButtons: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
+  clearButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'red' },
+  parenButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'blue' },
+  negativeButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'blue' },
+  deleteButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
+  equalsButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'green' },
 });
 
 export default App;
