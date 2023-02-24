@@ -93,51 +93,41 @@ const DeleteButton = (props: { setValue: any, textVal: string }) => {
 }
 
 const EqualsButton = (props: { setValue: any, textVal: string }) => {
-  function evaluate() {
-    var answer = 0;
-    var terms = [];
-    var inParen = false;
-    var termIndexes = [];
-    var equation = "";
+  function arithmetic(terms: any[]) {
     var computedTerms = [];
-
-    for (let char = 0; char < props.textVal.length; char++) {
-      if (props.textVal[char] == "(") {
-        inParen = true;
-        termIndexes.push([char + 1])
-      }
-
-      else if (props.textVal[char] == ")" && inParen) {
-        inParen = false;
-        termIndexes[termIndexes.length - 1].push(char);
-        equation += `&[${termIndexes.length - 1}]&`;
-      }
-
-      else {
-        equation += props.textVal[char];
-      }
-    }
-
-    for (let i = 0; i < termIndexes.length; i++) {
-      terms.push(props.textVal.substring(termIndexes[i][0], termIndexes[i][1]))
-    }
 
     for (let i = 0; i < terms.length; i++) {
       var term = terms[i].split(" ");
 
       for (let a = 0; a < term.length; a++) {
         if (term[a] == "+") {
-          computedTerms.push((term[a - 1] as unknown as Int32) + (term[a + 1] as unknown as Int32));
+          computedTerms.push(Number(term[a - 1]) + Number(term[a + 1]));
+        }
+
+        if (term[a] == "-") {
+          computedTerms.push(Number(term[a - 1]) - Number(term[a + 1]));
+        }
+
+        if (term[a] == "*") {
+          computedTerms.push(Number(term[a - 1]) * Number(term[a + 1]));
+        }
+
+        if (term[a] == "/") {
+          computedTerms.push(Number(term[a - 1]) / Number(term[a + 1]));
         }
       }
     }
 
-    props.setValue(computedTerms)
+    return (computedTerms);
+  }
+
+  function evaluate(localTextVal: string) {
+    
   }
 
   return (
     <View style={styles.equalsButton}>
-      <Button onPress={() => evaluate()} title='=' />
+      <Button onPress={() => evaluate(props.textVal)} title='=' />
     </View>
   )
 }
