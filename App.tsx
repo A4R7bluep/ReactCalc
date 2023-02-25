@@ -95,8 +95,6 @@ const DeleteButton = (props: { setValue: any, textVal: string }) => {
 const EqualsButton = (props: { setValue: any, textVal: string }) => {
     function arithmetic(localTextVal: string) {
         var splitString = localTextVal.split(" ");
-        // var intermediate = splitString;
-        console.log(splitString);
 
         var numOfMult = localTextVal.split("*").length;
         var numOfDiv = localTextVal.split("/").length;
@@ -128,15 +126,63 @@ const EqualsButton = (props: { setValue: any, textVal: string }) => {
             }
         }
 
+        for (var numOfAddAndSubtLeft = 0; numOfAddAndSubtLeft < numOfAddAndSubt; numOfAddAndSubtLeft++) {
+            for (var splitIndex = 0; splitIndex < splitString.length; splitIndex++) {
+                if (splitString[splitIndex] == "+") {
+                    var number1 = Number(splitString[splitIndex - 1]);
+                    var number2 = Number(splitString[splitIndex + 1]);
 
-        console.log(splitString);
+                    splitString.splice(splitIndex, 2);
+
+                    splitString[splitIndex - 1] = (number1 + number2).toString();
+                }
+
+                else if (splitString[splitIndex] == "-") {
+                    var number1 = Number(splitString[splitIndex - 1]);
+                    var number2 = Number(splitString[splitIndex + 1]);
+
+                    splitString.splice(splitIndex, 2);
+
+                    splitString[splitIndex - 1] = (number1 - number2).toString();
+                }
+            }
+        }
+
+        return (Number(splitString[0]));
     }
 
     function evaluate(localTextVal: string) {
         localTextVal = localTextVal.trim();
+        var editable = localTextVal.split("");
         var answer = 0;
 
-        arithmetic(localTextVal);
+        if (localTextVal.includes("(") || localTextVal.includes(")")) {
+            var numOfOpenParen = localTextVal.split("(").length - 1;
+            var numOfCloseParen = localTextVal.split(")").length - 1;
+
+            if (numOfOpenParen == numOfCloseParen) {
+                var numOfParen = numOfOpenParen;
+            }
+            else {
+                throw new Error("Number of opening parentheses not the same as closing parentheses");
+            }
+
+            for (var i = 0; i < numOfParen; i++) {
+                var beginningParen = localTextVal.indexOf("(");
+                var endingParen = localTextVal.lastIndexOf(")");
+                var expressionInParen = localTextVal.slice(beginningParen + 1, endingParen);
+                var value = arithmetic(expressionInParen);
+
+                editable.splice(beginningParen, endingParen - beginningParen + 1, value.toString());
+                console.log(editable);
+            }
+        }
+
+        for (var char = 1; char < editable.length; char++) {
+            editable[0].concat(editable[char]);
+        }
+
+        answer = arithmetic(editable[0]);
 
         props.setValue(answer);
     }
