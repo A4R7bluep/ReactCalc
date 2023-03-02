@@ -20,13 +20,21 @@ import {
     Button,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
+// import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
 
-const MainButton = (props: { value: string, setValue: any, textVal: string }) => {
+const NumButton = (props: { value: string, setValue: any, textVal: string }) => {
     return (
         <View style={styles.mainButtons}>
-            <Button onPress={() => props.setValue(` ${props.textVal + props.value} `)} title={props.value} />
+            <Button onPress={() => props.setValue(`${props.textVal + props.value}`)} title={props.value} />
+        </View>
+    )
+}
+
+const OperatorButton = (props: { value: string, setValue: any, textVal: string }) => {
+    return (
+        <View style={styles.mainButtons}>
+            <Button onPress={() => props.setValue(props.textVal + ` ${props.value} `)} title={props.value} />
         </View>
     )
 }
@@ -95,6 +103,9 @@ const DeleteButton = (props: { setValue: any, textVal: string }) => {
 const EqualsButton = (props: { setValue: any, textVal: string }) => {
     function arithmetic(localTextVal: string) {
         var splitString = localTextVal.split(" ");
+
+        // console.log(splitString);
+        // console.log(localTextVal);
 
         var numOfMult = localTextVal.split("*").length;
         var numOfDiv = localTextVal.split("/").length;
@@ -175,14 +186,19 @@ const EqualsButton = (props: { setValue: any, textVal: string }) => {
 
                 editable.splice(beginningParen, endingParen - beginningParen + 1, value.toString());
                 console.log(editable);
+                console.log(`Value: ${value}`);
+                console.log(`expression: ${expressionInParen}`);
             }
         }
 
         for (var char = 1; char < editable.length; char++) {
-            editable[0].concat(editable[char]);
+            editable[0] += editable[char];
+            console.log("in thingy");
         }
 
         answer = arithmetic(editable[0]);
+        // console.log(`Editable: ${editable}`);
+        // console.log(editable);
 
         props.setValue(answer);
     }
@@ -206,30 +222,30 @@ const App: () => JSX.Element = () => {
                 <ClearButton setValue={setValue} setInParentheses={setInParentheses} />,
                 <ParenButton setInParentheses={setInParentheses} inParentheses={inParentheses} setValue={setValue} textVal={textVal} />,
                 <DeleteButton setValue={setValue} textVal={textVal} />,
-                <MainButton value="/" setValue={setValue} textVal={textVal} />,
+                <OperatorButton value="/" setValue={setValue} textVal={textVal} />,
             ],
             [
-                <MainButton value="7" setValue={setValue} textVal={textVal} />,
-                <MainButton value="8" setValue={setValue} textVal={textVal} />,
-                <MainButton value="9" setValue={setValue} textVal={textVal} />,
-                <MainButton value="*" setValue={setValue} textVal={textVal} />,
+                <NumButton value="7" setValue={setValue} textVal={textVal} />,
+                <NumButton value="8" setValue={setValue} textVal={textVal} />,
+                <NumButton value="9" setValue={setValue} textVal={textVal} />,
+                <OperatorButton value="*" setValue={setValue} textVal={textVal} />,
             ],
             [
-                <MainButton value="4" setValue={setValue} textVal={textVal} />,
-                <MainButton value="5" setValue={setValue} textVal={textVal} />,
-                <MainButton value="6" setValue={setValue} textVal={textVal} />,
-                <MainButton value="-" setValue={setValue} textVal={textVal} />,
+                <NumButton value="4" setValue={setValue} textVal={textVal} />,
+                <NumButton value="5" setValue={setValue} textVal={textVal} />,
+                <NumButton value="6" setValue={setValue} textVal={textVal} />,
+                <OperatorButton value="-" setValue={setValue} textVal={textVal} />,
             ],
             [
-                <MainButton value="1" setValue={setValue} textVal={textVal} />,
-                <MainButton value="2" setValue={setValue} textVal={textVal} />,
-                <MainButton value="3" setValue={setValue} textVal={textVal} />,
-                <MainButton value="+" setValue={setValue} textVal={textVal} />,
+                <NumButton value="1" setValue={setValue} textVal={textVal} />,
+                <NumButton value="2" setValue={setValue} textVal={textVal} />,
+                <NumButton value="3" setValue={setValue} textVal={textVal} />,
+                <OperatorButton value="+" setValue={setValue} textVal={textVal} />,
             ],
             [
                 <NegativeButton setValue={setValue} textVal={textVal} setInParentheses={setInParentheses} inParentheses={inParentheses} />,
-                <MainButton value="0" setValue={setValue} textVal={textVal} />,
-                <MainButton value="." setValue={setValue} textVal={textVal} />,
+                <NumButton value="0" setValue={setValue} textVal={textVal} />,
+                <OperatorButton value="." setValue={setValue} textVal={textVal} />,
                 <EqualsButton setValue={setValue} textVal={textVal} />,
             ]
         ]
