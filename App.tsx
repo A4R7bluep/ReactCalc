@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, { type PropsWithChildren, useState } from 'react';
 import {
     SafeAreaView,
@@ -20,207 +10,27 @@ import {
     Button,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
-// import { Int32 } from 'react-native/Libraries/Types/CodegenTypes';
 
-
-const NumButton = (props: { value: string, setValue: any, textVal: string }) => {
-    return (
-        <View style={styles.mainButtons}>
-            <Button onPress={() => props.setValue(`${props.textVal + props.value}`)} title={props.value} />
-        </View>
-    )
-}
-
-const OperatorButton = (props: { value: string, setValue: any, textVal: string }) => {
-    return (
-        <View style={styles.mainButtons}>
-            <Button onPress={() => props.setValue(props.textVal + ` ${props.value} `)} title={props.value} />
-        </View>
-    )
-}
-
-const ClearButton = (props: { setValue: any, setInParentheses: any }) => {
-    function clear() {
-        props.setValue('')
-        props.setInParentheses(false)
-    }
-
-    return (
-        <View style={styles.clearButton}>
-            <Button onPress={() => clear()} title="C" />
-        </View>
-    )
-}
-
-const ParenButton = (props: { setInParentheses: any, inParentheses: boolean, setValue: any, textVal: string }) => {
-    function paren() {
-        if (props.inParentheses) {
-            props.setValue(props.textVal + ')')
-            props.setInParentheses(false)
-        }
-
-        else {
-            props.setValue(props.textVal + '(')
-            props.setInParentheses(true)
-        }
-    }
-
-    return (
-        <View style={styles.parenButton}>
-            <Button onPress={() => paren()} title='()' />
-        </View>
-    )
-}
-
-const NegativeButton = (props: { setValue: any, textVal: string, setInParentheses: any, inParentheses: boolean }) => {
-    function negative() {
-        if (props.inParentheses) {
-            props.textVal.indexOf('(-1*')
-            props.setInParentheses(false)
-        }
-
-        else {
-            props.setValue(props.textVal + '(-1*')
-            props.setInParentheses(true)
-        }
-    }
-
-    return (
-        <View style={styles.negativeButton}>
-            <Button onPress={() => negative()} title='+/-' />
-        </View>
-    )
-}
-
-const DeleteButton = (props: { setValue: any, textVal: string }) => {
-    return (
-        <View style={styles.deleteButton}>
-            <Button onPress={() => props.setValue(props.textVal.slice(0, -1))} title='⌫' />
-        </View>
-    )
-}
-
-const EqualsButton = (props: { setValue: any, textVal: string }) => {
-    function arithmetic(localTextVal: string) {
-        var splitString = localTextVal.split(" ");
-
-        // console.log(splitString);
-        // console.log(localTextVal);
-
-        var numOfMult = localTextVal.split("*").length;
-        var numOfDiv = localTextVal.split("/").length;
-        var numOfAdd = localTextVal.split("+").length;
-        var numOfSubt = localTextVal.split("-").length;
-
-        var numOfMultAndDiv = numOfMult + numOfDiv;
-        var numOfAddAndSubt = numOfAdd + numOfSubt;
-
-        for (var numOfMultAndDivLeft = 0; numOfMultAndDivLeft < numOfMultAndDiv; numOfMultAndDivLeft++) {
-            for (var splitIndex = 0; splitIndex < splitString.length; splitIndex++) {
-                if (splitString[splitIndex] == "*") {
-                    var number1 = Number(splitString[splitIndex - 1]);
-                    var number2 = Number(splitString[splitIndex + 1]);
-
-                    splitString.splice(splitIndex, 2);
-
-                    splitString[splitIndex - 1] = (number1 * number2).toString();
-                }
-
-                else if (splitString[splitIndex] == "/") {
-                    var number1 = Number(splitString[splitIndex - 1]);
-                    var number2 = Number(splitString[splitIndex + 1]);
-
-                    splitString.splice(splitIndex, 2);
-
-                    splitString[splitIndex - 1] = (number1 / number2).toString();
-                }
-            }
-        }
-
-        for (var numOfAddAndSubtLeft = 0; numOfAddAndSubtLeft < numOfAddAndSubt; numOfAddAndSubtLeft++) {
-            for (var splitIndex = 0; splitIndex < splitString.length; splitIndex++) {
-                if (splitString[splitIndex] == "+") {
-                    var number1 = Number(splitString[splitIndex - 1]);
-                    var number2 = Number(splitString[splitIndex + 1]);
-
-                    splitString.splice(splitIndex, 2);
-
-                    splitString[splitIndex - 1] = (number1 + number2).toString();
-                }
-
-                else if (splitString[splitIndex] == "-") {
-                    var number1 = Number(splitString[splitIndex - 1]);
-                    var number2 = Number(splitString[splitIndex + 1]);
-
-                    splitString.splice(splitIndex, 2);
-
-                    splitString[splitIndex - 1] = (number1 - number2).toString();
-                }
-            }
-        }
-
-        return (Number(splitString[0]));
-    }
-
-    function evaluate(localTextVal: string) {
-        localTextVal = localTextVal.trim();
-        var editable = localTextVal.split("");
-        var answer = 0;
-
-        if (localTextVal.includes("(") || localTextVal.includes(")")) {
-            var numOfOpenParen = localTextVal.split("(").length - 1;
-            var numOfCloseParen = localTextVal.split(")").length - 1;
-
-            if (numOfOpenParen == numOfCloseParen) {
-                var numOfParen = numOfOpenParen;
-            }
-            else {
-                throw new Error("Number of opening parentheses not the same as closing parentheses");
-            }
-
-            for (var i = 0; i < numOfParen; i++) {
-                var beginningParen = localTextVal.indexOf("(");
-                var endingParen = localTextVal.lastIndexOf(")");
-                var expressionInParen = localTextVal.slice(beginningParen + 1, endingParen);
-                var value = arithmetic(expressionInParen);
-
-                editable.splice(beginningParen, endingParen - beginningParen + 1, value.toString());
-                console.log(editable);
-                console.log(`Value: ${value}`);
-                console.log(`expression: ${expressionInParen}`);
-            }
-        }
-
-        for (var char = 1; char < editable.length; char++) {
-            editable[0] += editable[char];
-            console.log("in thingy");
-        }
-
-        answer = arithmetic(editable[0]);
-        // console.log(`Editable: ${editable}`);
-        // console.log(editable);
-
-        props.setValue(answer);
-    }
-
-    return (
-        <View style={styles.equalsButton}>
-            <Button onPress={() => evaluate(props.textVal)} title='=' />
-        </View>
-    )
-}
+import NumButton from './custom_modules/NumButton';
+import OperatorButton from './custom_modules/OperatorButton';
+import ClearButton from './custom_modules/ClearButton';
+import ParenButton from './custom_modules/ParenButton';
+import NegativeButton from './custom_modules/NegativeButton';
+import DeleteButton from './custom_modules/DeleteButton';
+import EqualsButton from './custom_modules/EqualsButton';
 
 
 const App: () => JSX.Element = () => {
-    const [textVal, setValue] = useState('');
+    const [textVal, setValue] = useState([]);
     const [inParentheses, setInParentheses] = useState(false);
+    const [curParenID, setCurParenID] = useState(0);
 
     const CONTENT = {
         tableHead: [<Text style={styles.label}>{textVal}</Text>],
         tableData: [
             [
                 <ClearButton setValue={setValue} setInParentheses={setInParentheses} />,
-                <ParenButton setInParentheses={setInParentheses} inParentheses={inParentheses} setValue={setValue} textVal={textVal} />,
+                <ParenButton setInParentheses={setInParentheses} inParentheses={inParentheses} setValue={setValue} textVal={textVal} curParenID={curParenID} setCurParenID={setCurParenID} />,
                 <DeleteButton setValue={setValue} textVal={textVal} />,
                 <OperatorButton value="/" setValue={setValue} textVal={textVal} />,
             ],
@@ -283,13 +93,6 @@ const styles = StyleSheet.create({
     text: { textAlign: 'center' },
     label: { textAlign: 'right', color: 'white', fontSize: 20, padding: 10 },
     table: { borderRadius: 100 },
-
-    mainButtons: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
-    clearButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'red' },
-    parenButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'blue' },
-    negativeButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'blue' },
-    deleteButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto' },
-    equalsButton: { width: 40, height: 40, marginRight: 'auto', marginLeft: 'auto', color: 'green' },
 });
 
 export default App;
