@@ -15,17 +15,37 @@ function count(value: any, array: any[]) {
 
 const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
     console.log(props.textVal);
+    var localTextVal = props.textVal;
 
-    function arithmetic(localTextVal: string) {
-        var splitString = localTextVal.split(" ");
+    for (var i = 0; i < localTextVal.length; i++) {
+        if (typeof parseInt(localTextVal[i]) == "number" && typeof parseInt(localTextVal[i + 1]) == "number") {
+            localTextVal[i] += localTextVal[i + 1];
+        }
+    }
 
-        // console.log(splitString);
-        // console.log(localTextVal);
+    function arithmetic(localTextVal: any[]) {
+        // var splitString = localTextVal.split(" ");
+        var splitString = localTextVal;
 
-        var numOfMult = localTextVal.split("*").length;
-        var numOfDiv = localTextVal.split("/").length;
-        var numOfAdd = localTextVal.split("+").length;
-        var numOfSubt = localTextVal.split("-").length;
+        var numOfMult = 0;
+        var numOfDiv = 0;
+        var numOfAdd = 0;
+        var numOfSubt = 0;
+
+        for (var i = 0; i < localTextVal.length; i++) {
+            if (localTextVal[i] == "*") {
+                numOfMult++
+            }
+            if (localTextVal[i] == "/") {
+                numOfDiv++
+            }
+            if (localTextVal[i] == "+") {
+                numOfAdd++
+            }
+            if (localTextVal[i] == "-") {
+                numOfSubt++
+            }
+        }
 
         var numOfMultAndDiv = numOfMult + numOfDiv;
         var numOfAddAndSubt = numOfAdd + numOfSubt;
@@ -79,8 +99,8 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
 
     function evaluate(localTextVal: any[]) {
         // localTextVal = localTextVal.trim();
-        var editable = localTextVal;
         var answer = 0;
+
 
         if (localTextVal.includes("(") || localTextVal.includes(")")) {
             var numOfOpenParen = count("(", localTextVal);
@@ -88,7 +108,6 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
 
             if (numOfOpenParen == numOfCloseParen) {
                 var numOfParen = numOfOpenParen;
-                // console.log(numOfParen);
             }
             else {
                 throw new Error("Number of opening parentheses not the same as closing parentheses");
@@ -102,11 +121,6 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
             }
 
             for (var i = 0; i < numOfParen; i++) {
-                // var beginningParen = localTextVal.indexOf("(");
-                // var endingParen = localTextVal.lastIndexOf(")");
-                // var expressionInParen = localTextVal.slice(beginningParen + 1, endingParen);
-                // var value = arithmetic(expressionInParen);
-
                 var beginningParens: number[][] = [];
                 var endingParens: number[][] = [];
                 var expressionsInParen: any[][] = [];
@@ -128,28 +142,23 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
                     expressionsInParen.push([localTextVal.slice(beginningParens[index][1], endingParens[index][1])]);
                     console.log(expressionsInParen);
                 }
-
-                // editable.splice(beginningParen, endingParen - beginningParen + 1, value.toString());
-                // console.log(editable);
-                // console.log(`Value: ${value}`);
-                // console.log(`expression: ${expressionInParen}`);
             }
         }
 
-        for (var char = 1; char < editable.length; char++) {
-            editable[0] += editable[char];
+        for (var char = 1; char < localTextVal.length; char++) {
+            localTextVal[0] += localTextVal[char];
         }
 
-        answer = arithmetic(editable[0]);
-        // console.log(`Editable: ${editable}`);
-        // console.log(editable);
+        console.log(`Debugging : ${typeof localTextVal}`);
+
+        answer = arithmetic(localTextVal[0]);
 
         props.setValue(answer);
     }
 
     return (
         <View style={styles.equalsButton}>
-            <Button onPress={() => evaluate(props.textVal)} title='=' />
+            <Button onPress={() => evaluate(localTextVal)} title='=' />
         </View>
     )
 }
