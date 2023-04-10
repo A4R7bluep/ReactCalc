@@ -14,7 +14,6 @@ function count(value: any, array: any[]) {
 }
 
 const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
-    console.log(props.textVal);
     var localTextVal = props.textVal;
 
     for (var i = 0; i < localTextVal.length; i++) {
@@ -78,6 +77,8 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
                     var number1 = Number(splitString[splitIndex - 1]);
                     var number2 = Number(splitString[splitIndex + 1]);
 
+
+                    // console.log(splitString);
                     splitString.splice(splitIndex, 2);
 
                     splitString[splitIndex - 1] = (number1 + number2).toString();
@@ -101,6 +102,7 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
         // localTextVal = localTextVal.trim();
         var answer = 0;
 
+        console.log(localTextVal);
 
         if (localTextVal.includes("(") || localTextVal.includes(")")) {
             var numOfOpenParen = count("(", localTextVal);
@@ -124,7 +126,6 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
                 var beginningParens: number[][] = [];
                 var endingParens: number[][] = [];
                 var expressionsInParen: any[][] = [];
-                var values = [];
 
                 for (var item = 0; item < localTextVal.length; item++) {
                     if (typeof localTextVal[item] == "object") {
@@ -145,13 +146,7 @@ const EqualsButton = (props: { setValue: any, textVal: any[] }) => {
             }
         }
 
-        for (var char = 1; char < localTextVal.length; char++) {
-            localTextVal[0] += localTextVal[char];
-        }
-
-        console.log(`Debugging : ${typeof localTextVal}`);
-
-        answer = arithmetic(localTextVal[0]);
+        answer = arithmetic(localTextVal);
 
         props.setValue(answer);
     }

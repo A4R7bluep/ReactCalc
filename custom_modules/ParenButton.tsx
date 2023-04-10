@@ -10,42 +10,31 @@ class parentheses {
         this.value = value;
     }
 
-    public toString() {
-        return this.value;
-    }
+    // public toString() {
+    //     return this.value;
+    // }
 }
 
 const ParenButton = (props: { setInParentheses: any, inParentheses: boolean, setValue: any, textVal: any[], curParenID: number, setCurParenID: any }) => {
     function paren() {
-        // if (props.inParentheses) {
-        //     props.setValue(props.textVal + ')')
-        //     props.setInParentheses(false)
-        // }
-
-        // else {
-        //     props.setValue(props.textVal + '(')
-        //     props.setInParentheses(true)
-        // }
+        var localTextVal = props.textVal;
 
         if (
-            props.textVal[props.textVal.length - 2] == "*" ||
-            props.textVal[props.textVal.length - 2] == "/" ||
-            props.textVal[props.textVal.length - 2] == "+" ||
-            props.textVal[props.textVal.length - 2] == "-" ||
-            props.textVal[props.textVal.length - 2] == undefined
+            localTextVal[localTextVal.length - 2] == "*" ||
+            localTextVal[localTextVal.length - 2] == "/" ||
+            localTextVal[localTextVal.length - 2] == "+" ||
+            localTextVal[localTextVal.length - 2] == "-" ||
+            localTextVal[localTextVal.length - 2] == undefined
         ) {
-            var obj = new parentheses(props.curParenID, "(")
-            // console.log(props.textVal);
-            props.setValue(props.textVal.push(obj));
+            props.setValue(localTextVal.push(new parentheses(props.curParenID, "(")));
             props.setCurParenID(props.curParenID + 1);
         }
 
         else {
-            props.setValue(props.textVal.push(new parentheses(props.curParenID, ")")));
+            props.setValue(localTextVal.push(new parentheses(props.curParenID, ")")));
             props.setCurParenID(props.curParenID - 1);
         }
-
-
+        console.log(`paren: ${typeof localTextVal}`);
     }
 
     return (

@@ -2,14 +2,9 @@ import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 
 const OperatorButton = (props: { value: string, setValue: any, textVal: any[] }) => {
-    const operators = ['+', '-', '*', '/'];
-
     function operator() {
         var localTextVal = props.textVal;
         localTextVal.push(props.value);
-        props.setValue(localTextVal);
-        // console.log(localTextVal);
-        // props.setValue(props.textVal[props.textVal.length] += props.value);
     }
 
     return (

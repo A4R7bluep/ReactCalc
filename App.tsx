@@ -26,7 +26,7 @@ const App: () => JSX.Element = () => {
     const [curParenID, setCurParenID] = useState(0);
 
     const CONTENT = {
-        tableHead: [<Text style={styles.label}>{textVal}</Text>],
+        tableHead: [<Text style={styles.label}>{String(textVal)}</Text>],
         tableData: [
             [
                 <ClearButton setValue={setValue} setInParentheses={setInParentheses} />,
